@@ -35,10 +35,10 @@ ${KEY}: ${CNF}
 	chmod 0600 ${KEY}
 	${OPENSSL} genpkey -algorithm ${KEYMODE} -out ${KEY}
 
-newcert: ${CADEPS}
+newkey: ${CADEPS}
 	mkdir -p csr/
-	${GENPKEY} -algorithm RSA -out "${item}" -pkeyopt rsa_keygen_bits:4096
-	${REQ} -new -key "${item}" -out "csr/$(subst .key,.csr,$(notdir item))"
+	${GENPKEY} -algorithm RSA -out "private/${name}.key" -pkeyopt rsa_keygen_bits:4096
+	${REQ} -new -key "${item}" -out "csr/${name}.csr"
 
 revoke:	${CADEPS} ${item}
 	@test -n $${item:?'usage: ${MAKE} revoke item=cert.pem'}
@@ -48,4 +48,4 @@ revoke:	${CADEPS} ${item}
 sign:	${CADEPS} ${item}
 	@test -n $${item:?'usage: ${MAKE} sign item=request.csr'}
 	mkdir -p newcerts
-	${CA} -in ${item} -out ${item:.csr=.crt} 
+	${CA} -in ${item} -out ${item:.csr=.crt}
