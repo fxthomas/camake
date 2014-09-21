@@ -1,0 +1,8 @@
+*.old
+*.pem
+*.key
+*.csr
+*.crt
+serial
+crlnumber
+index.txt*
