@@ -1,7 +1,8 @@
-OPENSSL=	openssl
-CNF=		openssl.cnf
-CA=		${OPENSSL} ca -config ${CNF}
-REQ=		${OPENSSL} req -config ${CNF}
+OPENSSL   =	openssl
+CNF       = openssl.cnf
+CA        = ${OPENSSL} ca -config ${CNF}
+REQ       = ${OPENSSL} req -config ${CNF}
+GENPKEY   = ${OPENSSL} genpkey -config ${CNF}
 
 KEY=		private/cakey.pem
 KEYMODE=	RSA
@@ -36,8 +37,8 @@ ${KEY}: ${CNF}
 
 newcert: ${CADEPS}
 	mkdir -p csr/
-	${OPENSSL} genpkey -algorithm RSA -out "private/${item}" -pkeyopt rsa_keygen_bits:4096
-	${OPENSSL} req -new -key "private/${item}" -out "csr/$(subst .key,.csr,$(item))"
+	${GENPKEY} -algorithm RSA -out "private/${item}" -pkeyopt rsa_keygen_bits:4096
+	${REQ} -new -key "private/${item}" -out "csr/$(subst .key,.csr,$(item))"
 
 revoke:	${CADEPS} ${item}
 	@test -n $${item:?'usage: ${MAKE} revoke item=cert.pem'}
