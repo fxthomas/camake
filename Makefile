@@ -37,8 +37,8 @@ ${KEY}: ${CNF}
 
 newkey: ${CADEPS}
 	mkdir -p csr/
-	${GENPKEY} -algorithm RSA -out "private/${name}.key" -pkeyopt rsa_keygen_bits:4096
-	${REQ} -new -key "private/${name}.key" -out "csr/${name}.csr"
+	${GENPKEY} -algorithm RSA -out "private/${name}.pem" -pkeyopt rsa_keygen_bits:4096
+	${REQ} -new -key "private/${name}.pem" -out "csr/${name}.csr"
 
 revoke:	${CADEPS} ${item}
 	@test -n $${item:?'usage: ${MAKE} revoke item=cert.pem'}
