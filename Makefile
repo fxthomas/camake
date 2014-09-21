@@ -19,6 +19,7 @@ CADEPS=		${CNF} ${KEY} ${CACERT}
 all:	${CRL}
 
 ${CRL}:	${CADEPS}
+	echo "01" > crlnumber
 	${CA} -gencrl -out ${CRL}
 
 ${CACERT}: ${CNF} ${KEY}
