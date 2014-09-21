@@ -33,6 +33,10 @@ ${KEY}: ${CNF}
 	chmod 0600 ${KEY}
 	${OPENSSL} genpkey -algorithm ${KEYMODE} -out ${KEY}
 
+newcert: ${CADEPS}
+	mkdir -p csr/
+	${OPENSSL} genpkey -algorithm RSA -out "private/${item}" -pkeyopt rsa_keygen_bits:4096
+	${OPENSSL} req -new -key "private/${item}" -out "csr/$(subst .key,.csr,$(item))"
 
 revoke:	${CADEPS} ${item}
 	@test -n $${item:?'usage: ${MAKE} revoke item=cert.pem'}
