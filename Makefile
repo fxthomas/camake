@@ -36,7 +36,7 @@ ${KEY}: ${CNF}
 	${OPENSSL} genpkey -algorithm ${KEYMODE} -out ${KEY}
 
 newkey: ${CADEPS}
-	mkdir -p csr/
+	mkdir -p csr
 	${GENPKEY} -algorithm RSA -out "private/${name}.pem" -pkeyopt rsa_keygen_bits:4096
 	${REQ} -new -key "private/${name}.pem" -out "csr/${name}.csr"
 
@@ -45,7 +45,7 @@ revoke:	${CADEPS} ${item}
 	${CA} -revoke ${item}
 	${MAKE} ${CRL}
 
-sign:	${CADEPS} ${item}
-	@test -n $${item:?'usage: ${MAKE} sign item=request.csr'}
-	mkdir -p newcerts
-	${CA} -in ${item} -out ${item:.csr=.crt}
+sign:	${CADEPS}
+	mkdir -p newcerts crt
+	${CA} -in "csr/${name}.csr" -out "crt/${name}.crt"
+	cat ${CACERT} "crt/${name}.crt" > "crt/${name}+ca.crt"
