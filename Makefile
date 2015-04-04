@@ -48,4 +48,4 @@ revoke:	${CADEPS} ${item}
 sign:	${CADEPS}
 	mkdir -p newcerts crt
 	${CA} -in "csr/${name}.csr" -out "crt/${name}.crt"
-	cat ${CACERT} "crt/${name}.crt" > "crt/${name}+ca.crt"
+	cat "crt/${name}.crt" ${CACERT} > "crt/${name}+ca.crt"
